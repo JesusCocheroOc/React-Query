@@ -9,7 +9,8 @@ export const router = createBrowserRouter([
     element: <GitApp />,
     children: [
       { path: 'list', element: <ListView /> },
-      { path: 'issue/:id', element: <IssueView /> },
+      /*/// pasar el parámetro  */
+      { path: 'issue/:issueNumber', element: <IssueView /> },
       { path: '*', element: <Navigate to="list" /> },
     ],
   },
