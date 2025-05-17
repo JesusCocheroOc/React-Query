@@ -1,9 +1,13 @@
 import LoadingSpinner from '../../shared/components/LoadingSpinner';
 import { useLabelsQuery } from '../hooks/useLabelsQuery';
 
-export const LabelPicker = () => {
+/// 1 Recibir estas propiedades
+interface LabelPickerProps {
+    labels: string[];
+    onLabelsSelected: (label: string) => void;}
 
-    /// 1. usar el hook que creamos para obtener las etiquetas
+export const LabelPicker = ({ onLabelsSelected, labels }:LabelPickerProps) => {
+
     const { labelsQuery } = useLabelsQuery();
     if (labelsQuery.isLoading) {
         return <div className='flex justify-center items-center h-52'> <LoadingSpinner/> </div>;
@@ -22,8 +26,13 @@ export const LabelPicker = () => {
             {labelsQuery.data?.map((label) => (
                 <span
                     key={label.id}
-                    /*/// Usar el faceIn que configuramos, como lo llamas allá asi se usa aca la animación */
-                    className='animate-fadeIn px-2 py-1 rounded-full text-xs font-semibold hover:bg-slate-800 cursor-pointer'
+                    /*/// 2. se agrega el onclick y la clase de seleccionado o no que es de css  */
+                    onClick={() => onLabelsSelected(label.name)}
+                    className={`animate-fadeIn px-2 py-1 rounded-full text-xs font-semibold hover:bg-slate-800 cursor-pointer ${
+                        labels.includes(label.name)
+                            ? 'selected-label '
+                            : ''
+                    }`}
                     style={{
                         border: `1px solid #${label.color}`,
                         color: `#${label.color}`,
